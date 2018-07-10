@@ -1,0 +1,21 @@
+: # This is a special script which intermixes both sh
+: # and cmd code. It is written this way because it is
+: # used in system() shell-outs directly in otherwise
+: # portable code. See https://stackoverflow.com/questions/17510688
+: # for details.
+:; if [ -z 0 ]; then
+  @echo off
+  goto :WINDOWS
+fi
+
+# bash stuff
+
+# This is simple wrapper for docker.
+docker run -it --rm --name ng -w /opt/app -v $(pwd):/opt/app -p 4200:4200 teracy/angular-cli $*
+
+exit
+
+:WINDOWS
+
+:: windows stuff
+docker run -it --rm --name ng -w /opt/app -v %cd%:/opt/app -p 4200:4200 teracy/angular-cli %*
